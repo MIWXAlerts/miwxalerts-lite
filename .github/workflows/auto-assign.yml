@@ -1,0 +1,19 @@
+name: Auto Assign
+
+on:
+  issues:
+    types: [opened, reopened]
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign new issue or PR
+        uses: pozil/auto-assign-issue@v1
+        with:
+          assignees: oodvg 
+          numOfAssignee: 1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
