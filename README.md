@@ -39,4 +39,4 @@ Feel free to fork this repo, open an issue, or submit a pull request to suggest 
 
 ## 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the GNU GPLv3 License.
