@@ -17,7 +17,7 @@ It is a simplified, community-friendly edition of the private MIWXAlerts project
 - Fetches **live weather alerts** for Michigan directly from NWS.
 - Displays event type, severity, affected areas, and effective/expiration times.
 - Command-line interface (CLI) with **no extra setup required**.
-- Lightweight – only depends on `requests`.
+- Lightweight – only depends on `requests` and colorama.
 
 ---
 
