@@ -2,11 +2,14 @@ import requests
 import datetime
 from colorama import Fore, Style, init
 
-
 init(autoreset=True)
 
-API_URL = "https://api.weather.gov/alerts/active?area=MI"
-USER_AGENT = "miwxalerts-lite/1.0"
+
+STATES = ["MI", "WI", "OH", "IL", "IN"]
+STATE_QUERY = ",".join(STATES)
+
+API_URL = f"https://api.weather.gov/alerts/active?area={STATE_QUERY}"
+USER_AGENT = "glsn-lite/1.0 (Great Lakes Severe Network)"
 
 
 
@@ -98,45 +101,68 @@ def display_alerts(data):
 
     alerts = data["features"]
     if not alerts:
-        print(f"{Fore.GREEN}✅ No active alerts in Michigan.{Style.RESET_ALL}")
+        print(
+            f"{Fore.GREEN}✅ No active alerts across the Great Lakes region."
+            f"{Style.RESET_ALL}"
+        )
         return
 
     print(
-        f"{Fore.CYAN}⚠️ Active Weather Alerts for Michigan "
-        f"({len(alerts)} total):{Style.RESET_ALL}\n"
+        f"{Fore.CYAN}⚠️ Active Weather Alerts — Great Lakes Severe Network"
+        f"{Style.RESET_ALL}\n"
     )
+
+    state_buckets = {state: [] for state in STATES}
+
 
     for alert in alerts:
         props = alert.get("properties", {})
+        area = (props.get("areaDesc") or "").upper()
 
-        event = props.get("event", "Unknown Event")
-        severity = props.get("severity", "Unknown")
-        area = props.get("areaDesc", "Unknown area")
-        effective = props.get("effective", "N/A")
-        expires = props.get("expires", "N/A")
-        headline = props.get("headline", "No headline")
-        status = props.get("status", "Actual")
-        sender = props.get("senderName", "NWS")
+        for state in STATES:
+            if f", {state}" in area or area.endswith(f" {state}"):
+                state_buckets[state].append(alert)
 
-        sev_color = color_for_severity(severity)
-        emoji = emoji_for_event(event)
 
-        tags = []
-        if "tornado" in event.lower():
-            tags.extend(severe_tags(props))
-        if any(x in event.lower() for x in ["winter", "snow", "ice"]):
-            tags.extend(winter_tags(event))
+    for state in STATES:
+        state_alerts = state_buckets[state]
+        if not state_alerts:
+            continue
 
-        tag_str = f" [{' | '.join(tags)}]" if tags else ""
+        print(f"{Fore.BLUE}📍 {state} — {len(state_alerts)} alert(s){Style.RESET_ALL}")
+        print("=" * 60)
 
-        print(f"{sev_color}{emoji} {event} ({severity}){tag_str}{Style.RESET_ALL}")
-        print(f"   {headline}")
-        print(f"   Areas: {area}")
-        print(f"   Issued by: {sender}")
-        print(f"   Status: {status}")
-        print(f"   Effective: {effective}")
-        print(f"   Expires:   {expires}")
-        print("-" * 60)
+        for alert in state_alerts:
+            props = alert.get("properties", {})
+
+            event = props.get("event", "Unknown Event")
+            severity = props.get("severity", "Unknown")
+            area = props.get("areaDesc", "Unknown area")
+            effective = props.get("effective", "N/A")
+            expires = props.get("expires", "N/A")
+            headline = props.get("headline", "No headline")
+            status = props.get("status", "Actual")
+            sender = props.get("senderName", "NWS")
+
+            sev_color = color_for_severity(severity)
+            emoji = emoji_for_event(event)
+
+            tags = []
+            if "tornado" in event.lower():
+                tags.extend(severe_tags(props))
+            if any(x in event.lower() for x in ["winter", "snow", "ice"]):
+                tags.extend(winter_tags(event))
+
+            tag_str = f" [{' | '.join(tags)}]" if tags else ""
+
+            print(f"{sev_color}{emoji} {event} ({severity}){tag_str}{Style.RESET_ALL}")
+            print(f"   {headline}")
+            print(f"   Areas: {area}")
+            print(f"   Issued by: {sender}")
+            print(f"   Status: {status}")
+            print(f"   Effective: {effective}")
+            print(f"   Expires:   {expires}")
+            print("-" * 60)
 
     print(
         f"\nLast updated: "
