@@ -1,9 +1,9 @@
 # GLSevereNetwork (GLSN) Lite
 
-[![Label Sync](https://github.com/GLSevereNet/GLSN-lite/actions/workflows/auto-labels.yml/badge.svg)](https://github.com/GLSevereNet/GLSN-lite/actions/workflows/auto-labels.yml)
-[![Auto Assign](https://github.com/GLSevereNet/GLSN-lite/actions/workflows/auto-assign.yml/badge.svg)](https://github.com/GLSevereNet/GLSN-lite/actions/workflows/auto-assign.yml)
+[![Label Sync](https://github.com/GLSevereNetwork/GLSN-lite/actions/workflows/auto-labels.yml/badge.svg)](https://github.com/GLSevereNetwork/GLSN-lite/actions/workflows/auto-labels.yml)
+[![Auto Assign](https://github.com/GLSevereNetwork/GLSN-lite/actions/workflows/auto-assign.yml/badge.svg)](https://github.com/GLSevereNetwork/GLSN-lite/actions/workflows/auto-assign.yml)
 ![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
-![License](https://img.shields.io/github/license/GLSevereNet/GLSN-lite)
+![License](https://img.shields.io/github/license/GLSevereNetwork/GLSN-lite)
 ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen)
 
 ---
@@ -26,7 +26,7 @@ It is a simplified, community-friendly edition of the private GLSN project, desi
 Clone the repository and install the required dependencies:
 
 ```bash
-git clone https://github.com/GLSevereNet/GLSN-lite.git
+git clone https://github.com/GLSevereNetwork/GLSN-lite.git
 cd GLSN-lite
 pip install -r requirements.txt
 python main.py
